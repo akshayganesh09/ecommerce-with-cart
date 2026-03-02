@@ -1,5 +1,5 @@
 const validateProduct = (req, res, next) => {
-    const allowedKeys = ["name", "price"];
+    const allowedKeys = ["name", "price", "stock"];
     const incomingKeys = Object.keys(req.body);
 
     const hasExtraKeys = incomingKeys.some((item) => !allowedKeys.includes(item));
@@ -10,7 +10,7 @@ const validateProduct = (req, res, next) => {
         });
     }
 
-    const { name, price } = req?.body;
+    const { name, price, stock } = req?.body;
 
     if (!name || typeof name !== "string") {
         return res.status(400).json({
@@ -21,6 +21,12 @@ const validateProduct = (req, res, next) => {
     if (!price || typeof price !== "number") {
         return res.status(400).json({
             message: "Price is required and must be a number",
+        });
+    };
+
+    if (!stock || typeof stock !== "number") {
+        return res.status(400).json({
+            message: "Stock is required and must be a number",
         });
     };
 
