@@ -24,4 +24,15 @@ const getCart = (req, res, next) => {
     }
 };
 
-module.exports = { addToCart, getCart };
+const removeItem = (req, res, next) => {
+    try {
+        const id = parseInt(req?.params?.id);
+        const cart = cartService?.removeItem(id);
+
+        return sendSuccess(res, cart, 200, "Item Removed");
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { addToCart, getCart, removeItem };
