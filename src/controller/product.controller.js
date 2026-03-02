@@ -46,6 +46,10 @@ const updateProduct = async (req, res, next) => {
         const { name, price, stock } = req?.body;
         const product = await productService.updateProduct(id, { name, price, stock });
 
+        if(!product) {
+            return sendError(res, 404, "Product not found");
+        }
+
         sendSuccess(res, product, 200, "Updated successfully");
     } catch (error) {
         next(error);
@@ -56,6 +60,10 @@ const deleteProduct = async (req, res, next) => {
     try {
         const id = req.params.id;
         const product = await productService.deleteProduct(id);
+
+        if(!product) {
+            return sendError(res, 404, "Product not found");
+        }
 
         sendSuccess(res, product, 200, `Product- ${id}, Deleted successfully`);
     } catch (error) {
