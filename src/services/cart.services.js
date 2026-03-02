@@ -30,11 +30,18 @@ const getCart = () => {
 }
 
 const calculateTotal = () => {
-    const total = cart.reduce((total, item) => {
+    const total = cart?.reduce((total, item) => {
         return total + item?.quantity * item?.price
     }, 0);
 
     return total;
 };
 
-module.exports = { addToCart, getCart, calculateTotal };
+const removeItem = (id) => {
+    const newCart = cart?.filter((item) => item.id !== Number(id));
+    cart = newCart;
+
+    return cart;
+};
+
+module.exports = { addToCart, getCart, calculateTotal, removeItem };
