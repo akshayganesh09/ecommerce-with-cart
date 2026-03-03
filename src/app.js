@@ -6,6 +6,7 @@ const pageNotFound = require("./middleware/notfound.middleware");
 
 // Routers
 const productRouter = require("./routes/products.routes");
+const ordersRouter = require("./routes/order.routes");
 const cartRouter = require("./routes/cart.routes");
 
 const app = express();
@@ -13,6 +14,7 @@ const app = express();
 app.use(express.json());
 
 app.use("/api/v1/products", productRouter);
+app.use("/api/v1/orders", ordersRouter);
 app.use("/api/v1/cart", cartRouter);
 
 app.use(errorHandler);

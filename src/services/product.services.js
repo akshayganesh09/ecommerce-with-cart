@@ -1,5 +1,3 @@
-const products = require("../data/product");
-
 const pool = require("../config/db");
 
 const getAllProducts = async () => {
