@@ -4,12 +4,12 @@ const pool = require("../config/db");
 
 const AppError = require("../utils/appError.utils");
 
-const register = async (email, password) => {
+const register = async (email, password, role = 'user') => {
     // Hash Password.
     const hashedPassword = await bcrypt.hash(password, 10);
 
     try {
-        const result = await pool.query("INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email, role", [email, hashedPassword]);
+        const result = await pool.query("INSERT INTO users (email, password, role) VALUES ($1, $2, $3) RETURNING id, email, role", [email, hashedPassword, role]);
 
         return result.rows[0];
     } catch (err) {

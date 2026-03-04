@@ -1,11 +1,20 @@
 const pool = require("../config/db");
 const AppError = require("../utils/appError.utils");
 
+const getOrderList = async () => {
+    const client = await pool.connect();
+
+    try {
+        const result = await client.query("SELECT * FROM orders");
+
+        return result.rows;
+    } catch (error) {
+        throw new AppError('Request not found', 404);
+    }
+};
+
 const createOrders = async (productId, quantity) => {
         const client = await pool.connect();
-
-        console.log("Client: ", client);
-        console.log("Id: ", productId, "Quantity: ", quantity);
 
     try {
         // Initiate the changes in DB.
@@ -46,4 +55,4 @@ const createOrders = async (productId, quantity) => {
     }
 };
 
-module.exports = { createOrders };
+module.exports = { createOrders, getOrderList };
