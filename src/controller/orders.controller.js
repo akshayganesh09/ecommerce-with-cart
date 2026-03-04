@@ -12,4 +12,13 @@ const createOrders = async (req, res, next) => {
     }
 };
 
-module.exports = { createOrders };
+const getOrderList = async (req, res, next) => {
+    try {
+        const result = await orderService.getOrderList();
+        return sendSuccess(res, result, 200, "Success");
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { createOrders, getOrderList };
