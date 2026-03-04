@@ -5,6 +5,7 @@ const errorHandler = require("./middleware/error.middleware");
 const pageNotFound = require("./middleware/notfound.middleware");
 
 // Routers
+const authRouter = require("./routes/auth.routes");
 const productRouter = require("./routes/products.routes");
 const ordersRouter = require("./routes/order.routes");
 const cartRouter = require("./routes/cart.routes");
@@ -13,9 +14,15 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/api/v1/products", productRouter);
-app.use("/api/v1/orders", ordersRouter);
-app.use("/api/v1/cart", cartRouter);
+const BASE_URL ="/api/v1";
+
+process.env.JWT_SECRET = "supersecretkey";
+process.env.JWT_EXPIRES_IN = "1h";
+
+app.use(`${BASE_URL}/auth`, authRouter);
+app.use(`${BASE_URL}/products`, productRouter);
+app.use(`${BASE_URL}/orders`, ordersRouter);
+app.use(`${BASE_URL}/cart`, cartRouter);
 
 app.use(errorHandler);
 app.use(pageNotFound);
