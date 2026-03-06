@@ -1,7 +1,7 @@
 const pool = require("../config/db");
+const AppError = require("../utils/appError.utils");
 
 const getAllProducts = async (page = 1, limit = 10, filter = {}) => {
-    console.log("filter: ", filter);
     const offSet = (page - 1) * limit;
 
     let query = `SELECT * FROM products`;
@@ -31,9 +31,14 @@ const getAllProducts = async (page = 1, limit = 10, filter = {}) => {
 
     // Sorting.
     if (filter.sort) {
-        console.log(filter.sort)
+        const allowedSortField = ["name", "price", "created_at"];
+
         const order = filter.sort.startsWith("-") ? "DESC" :"ASC";
         const field = filter.sort.replace("-", "");
+
+        if(!allowedSortField.includes(field)) {
+            throw new AppError("Invalid sort field", 400);
+        }
 
         query = query + ` ORDER BY ${field} ${order}`;
     } else {
