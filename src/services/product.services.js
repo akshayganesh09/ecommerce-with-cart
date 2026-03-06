@@ -1,9 +1,23 @@
 const pool = require("../config/db");
 
-const getAllProducts = async () => {
-    const result = await pool.query("SELECT * FROM products");
+const getAllProducts = async (page = 1, limit = 10) => {
+    const offSet = (page - 1) * limit;
+    const result = await pool.query("SELECT * FROM products ORDER BY id LIMIT $1 OFFSET $2", [limit, offSet]);
 
-    return result.rows;
+    const countResult = await pool.query("SELECT COUNT(*) FROM products");
+
+    const total = parseInt(countResult.rows[0]?.count);
+    const totalPage = Math.ceil(total/limit); 
+
+    return {
+        products: result.rows,
+        meta: {
+            page,
+            limit,
+            total,
+            totalPage
+        }
+    };
 };
 
 const getProductById = async (id) => {
