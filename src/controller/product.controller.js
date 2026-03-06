@@ -6,9 +6,15 @@ const getAllProducts = async (req, res, next) => {
         const page = (req.query.page) || 1;
         const limit = (req.query.limit) || 5;
 
-        const products = await productService.getAllProducts(page, limit);
+        const filters = {
+            minPrice: req.query.minPrice,
+            maxPrice: req.query.maxPrice,
+            sort: req.query.sort
+        };
 
-        return sendSuccess(res, products);
+        const result = await productService.getAllProducts(page, limit, filters);
+
+        return sendSuccess(res, result);
     } catch (error) {
         next(error);
     } 
