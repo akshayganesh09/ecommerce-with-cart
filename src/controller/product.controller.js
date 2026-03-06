@@ -3,7 +3,11 @@ const { sendSuccess, sendError } = require("../utils/response.utils");
 
 const getAllProducts = async (req, res, next) => {
     try {
-        const products = await productService.getAllProducts();
+        const page = (req.query.page) || 1;
+        const limit = (req.query.limit) || 5;
+
+        const products = await productService.getAllProducts(page, limit);
+
         return sendSuccess(res, products);
     } catch (error) {
         next(error);
